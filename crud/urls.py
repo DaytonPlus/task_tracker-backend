@@ -3,9 +3,9 @@ from .views import ProjectView, TeamMemberView, TaskView
 
 router = routers.DefaultRouter()
 
-router.register('a', ProjectView, 'proyect')
-router.register('b', TeamMemberView, 'teammember')
-router.register('c', TaskView, 'task')
+router.register('proyect', ProjectView, 'proyect')
+router.register('team_member', TeamMemberView, 'teammember')
+router.register('task', TaskView, 'task')
 
 urlpatterns = router.urls
 

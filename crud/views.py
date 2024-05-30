@@ -1,24 +1,26 @@
-from django.shortcuts import render
-from rest_framework import viewsets, permissions 
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
+
 from .models import Project, TeamMember, Task
 from .serializers import ProjectSerializer, TeamMemberSerializer, TaskSerializer
 
-# Create your views here.
-
-
-class ProjectView(viewsets.ModelViewSet):
+class ProjectView(ModelViewSet):
     queryset = Project.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = ProjectSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class TeamMemberView(viewsets.ModelViewSet):
     queryset = TeamMember.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = TeamMemberSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 class TaskView(viewsets.ModelViewSet):
     queryset = Task.objects.all()
-    permission_classes = [permissions.AllowAny]
     serializer_class = TaskSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
