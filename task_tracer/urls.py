@@ -15,14 +15,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include, re_path
-from . import views
+from django.urls import path, include
+from . import auth
+
+
+# Disable Admin Authentication
+class AccessUser:
+    has_module_perms = has_perm = __getattr__ = lambda s,*a,**kw: True
+admin.site.has_permission = lambda r: setattr(r, 'user', AccessUser()) or True
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('login', views.login),
-    re_path('register', views.register),
-    re_path('profile', views.profile),
-    re_path('logout', views.logout),
-    path('', include('crud.urls')),
+    path('api/', include([
+        path('test', auth.test),
+        path('v1/', include('crud.urls')),
+        path('auth/', include([
+            path('check/', auth.checkToken),
+            path('login/', auth.login),
+            path('register/', auth.register),
+            path('profile/', auth.profile),
+            path('logout/', auth.logout),
+        ])),
+    ])),
 ]
