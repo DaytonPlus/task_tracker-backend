@@ -1,4 +1,20 @@
 from django.db import models
+from rest_framework.authtoken.models import Token as AuthToken
+from django.utils import timezone
+
+
+class Token(AuthToken):
+    expiration_time = models.DateTimeField(default=timezone.now)
+
+    def is_expired(self):
+        if self.expiration_time is not None:
+            return self.expiration_time < timezone.now() - timezone.timedelta(seconds=10)
+        return False
+
+    def update_expiration_time(self):
+        self.expiration_time = timezone.now()
+        self.save()
+
 
 class Project(models.Model):
     name = models.CharField(max_length=255)

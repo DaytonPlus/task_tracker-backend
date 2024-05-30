@@ -24,5 +24,5 @@ urlpatterns = [
     re_path('register', views.register),
     re_path('profile', views.profile),
     re_path('logout', views.logout),
-    # path('', include('crud.urls')),
+    path('', include('crud.urls')),
 ]

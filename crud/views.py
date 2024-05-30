@@ -8,19 +8,19 @@ from .serializers import ProjectSerializer, TeamMemberSerializer, TaskSerializer
 class ProjectView(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
-class TeamMemberView(viewsets.ModelViewSet):
+class TeamMemberView(ModelViewSet):
     queryset = TeamMember.objects.all()
     serializer_class = TeamMemberSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
-class TaskView(viewsets.ModelViewSet):
+class TaskView(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 
