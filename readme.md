@@ -1,4 +1,4 @@
-# 🚀 Task Tracer v0.0.3
+# 🚀 Task Tracer
 
 **Task Tracer** es una aplicación robusta construida con **Django Rest Framework**. Esta aplicación permite realizar operaciones **CRUD** (Crear, Leer, Actualizar, Eliminar) para el seguimiento de tareas. Utiliza **PostgreSQL** como base de datos y **CORS local** para manejar las solicitudes de origen cruzado.
 
