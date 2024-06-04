@@ -1,31 +1,56 @@
-## Task Tracer v0.0.3
-Rest Framework (DRF) without a server for a single HTML page. Here's a simple example of how you can do it:
+# 🚀 Task Tracer v0.0.3
 
-First, you need to install Django and Django Rest Framework:
+**Task Tracer** es una aplicación robusta construida con **Django Rest Framework**. Esta aplicación permite realizar operaciones **CRUD** (Crear, Leer, Actualizar, Eliminar) para el seguimiento de tareas. Utiliza **PostgreSQL** como base de datos y **CORS local** para manejar las solicitudes de origen cruzado.
 
-```pip install -r requirements.txt```
+## 📋 Requisitos
 
+Para ejecutar esta aplicación, necesitarás:
 
-### For Create Project
-Then, create a new Django project:
+- **Python** (última versión)
+- **PostgreSQL**
 
-```django-admin startproject myproject```
+## 🛠️ Instalación
 
-Next, create a new Django app:
+Sigue estos pasos para instalar y ejecutar la aplicación:
 
-```python manage.py startapp myapp```
+### Paso 1: Instalar las dependencias
 
-### Create DB
-Now, let's create a simple model in myapp/models.py:
-Run migrations:
+Primero, necesitas instalar las dependencias. Puedes hacerlo ejecutando el siguiente comando:
 
+```bash
+pip install -r requirements.txt
 ```
+
+> ⚠️ **Importante**: Asegúrate de tener instalada la última versión de Python.
+
+### Paso 2: Crear la base de datos
+
+Ahora, vamos a crear la base de datos con los siguientes comandos:
+
+```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-Now, you can run the server:
+### Paso 3: Ejecutar el servidor
 
-```python manage.py runserver```
+Finalmente, puedes ejecutar el servidor con el siguiente comando:
 
+```bash
+python manage.py runserver
+```
+
+¡Listo! La aplicación está corriendo en [http://localhost:8000/](http://localhost:8000/)
+
+## 📚 Documentación
+
+Para más detalles sobre cómo usar la aplicación, consulta la [documentación oficial](#).
+
+## 📧 Contacto
+
+Si tienes alguna pregunta o sugerencia, no dudes en contactarnos a través de [nuestro correo electrónico](daytonprogrammer@gmail.com).
+
+## 📃 Licencia
+
+Task Tracer está bajo la licencia [MIT](#). Consulta el archivo `LICENSE` para más detalles.
 

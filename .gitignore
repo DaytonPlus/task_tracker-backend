@@ -1,3 +1,21 @@
-.env
-*.txt
-*.sqlite3
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django migrations
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+
+# Django logs
+*.log
+
+# Django database file
+db.sqlite3
+
+# Django media folder
+media/
+
+# Others
+code-notes.txt

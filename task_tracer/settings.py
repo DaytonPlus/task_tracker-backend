@@ -64,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'task_tracer.middleware.EnsureJSONMiddleware',
 ]
 
 ROOT_URLCONF = 'task_tracer.urls'
@@ -133,7 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-APPEND_SLASH = False
+# APPEND_SLASH = False
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -146,6 +147,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8080',
     'http://localhost:26543',
     'http://127.0.0.1:26543',
+    'http://localhost:8158',
+    'http://127.0.0.1:8158',
 ]
 
 

@@ -17,12 +17,12 @@ def test(request):
     print("Hello:   ", request.data)
     #For application/form
     # print("Hello:   " + request.POST)
-    return Response({"msg": "Your test is success!", "post": request.POST, "data": request.data}, status=status.HTTP_200_OK)
+    return Response({"detail": "Your test is success!", "post": request.POST, "data": request.data}, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def checkToken(request):
-    return Response({"valid": true}, status=status.HTTP_200_OK)
+    return Response({"ok": "true", "detail": "Your token is valid"}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -34,11 +34,8 @@ def login(request):
     serializer = UserSerializer(instance=user)
     try:
         token = Token.objects.get(user=user)
-        if not token.is_expired():
-            return Response({"msg": "You are already logged in!"}, status=status.HTTP_200_OK)
-        else:
-            token.delete()
-            token = Token.objects.create(user=user)
+        # token.delete()
+        # token = Token.objects.create(user=user)
     except Token.DoesNotExist:
             token = Token.objects.create(user=user)
     return Response({"token": token.key}, status=status.HTTP_200_OK)
@@ -56,7 +53,7 @@ def register(request):
         token = Token.objects.create(user=user)
         return Response({"token": token.key}, status=status.HTTP_201_CREATED)
     #return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    return Response({"msg": "Invalid register data!"}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({"detail": "El nombre de usuario ya existe o es invalido!"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

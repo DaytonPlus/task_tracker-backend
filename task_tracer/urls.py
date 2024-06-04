@@ -28,7 +28,7 @@ admin.site.has_permission = lambda r: setattr(r, 'user', AccessUser()) or True
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include([
-        path('test', auth.test),
+        path('test/', auth.test),
         path('v1/', include('crud.urls')),
         path('auth/', include([
             path('check/', auth.checkToken),
