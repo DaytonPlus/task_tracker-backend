@@ -44,7 +44,7 @@ python manage.py runserver
 
 ## 📚 Documentación
 
-Para más detalles sobre cómo usar la aplicación, consulta la [documentación oficial](#).
+Para más detalles sobre cómo usar la aplicación, consulta la [documentación oficial](https://github.com/DaytonPlus/task_tracer-backend/blob/master/wiki/index.md).
 
 ## 📧 Contacto
 
