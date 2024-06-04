@@ -12,7 +12,7 @@ Task Tracer es una aplicación para la administración de tareas. Permite a los 
 
 ## Referencias
 
-- [API Docs](https://github.com/DaytonPlus/task_tracer-backend/blob/master/wiki/apis.md): Documentación de como funciona los apis de la aplicación
+- [API Docs](apis.md): Documentación de como funciona los apis de la aplicación
 
-- [Installation Guide](https://github.com/DaytonPlus/task_tracer-backend/blob/master/wiki/installation.md): Instrucciones detalladas para instalar y configurar Task Tracer.
+- [Installation Guide](installation.md): Instrucciones detalladas para instalar y configurar Task Tracer.
 

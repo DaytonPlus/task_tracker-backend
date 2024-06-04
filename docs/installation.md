@@ -1,16 +1,16 @@
-# Guía de Instalación de Task Tracer
+# GuÃ­a de InstalaciÃ³n de Task Tracer
 
 ## Requisitos Previos
-Antes de instalar Task Tracer, asegúrate de tener lo siguiente:
+Antes de instalar Task Tracer, asegÃºrate de tener lo siguiente:
 
-- **Python**: Task Tracer está construido en Python, por lo que necesitas tener Python instalado en tu sistema. Puedes descargarlo desde [python.org](https://www.python.org/downloads/).
+- **Python**: Task Tracer estÃ© construido en Python, por lo que necesitas tener Python instalado en tu sistema. Puedes descargarlo desde [python.org](https://www.python.org/downloads/).
 
-## Pasos de Instalación
+## Pasos de InstalaciÃ³n
 
 1. **Clonar el Repositorio**:
    Clona el repositorio de Task Tracer desde GitHub:
-
-   ```bash
+   
+```bash
    git clone https://github.com/DaytonPlus/task-tracer-backend.git
    ```
 
@@ -54,7 +54,7 @@ Antes de instalar Task Tracer, asegúrate de tener lo siguiente:
    ```
 
 7. **Crear un Superusuario**:
-   Crea un superusuario para acceder al panel de administración:
+   Crea un superusuario para acceder al panel de administraciÃ³n:
 
    ```bash
    python manage.py createsuperuser
@@ -67,10 +67,10 @@ Antes de instalar Task Tracer, asegúrate de tener lo siguiente:
    python manage.py runserver
    ```
 
-9. **Acceder al Panel de Administración**:
-   Abre tu navegador y ve a [http://localhost:8000/admin/](http://localhost:8000/admin/). Inicia sesión con las credenciales del superusuario.
+9. **Acceder al Panel de AdministraciÃ³n**:
+   Abre tu navegador y ve a [http://localhost:8000/admin/](http://localhost:8000/admin/). Inicia sesiÃ³n con las credenciales del superusuario.
 
-¡Listo! Ahora puedes comenzar a utilizar Task Tracer para administrar tus tareas. Si tienes alguna pregunta o necesitas más detalles, no dudes en preguntar.
+Â¡Listo! Ahora puedes comenzar a utilizar Task Tracer para administrar tus tareas. Si tienes alguna pregunta o necesitas mÃ¡s detalles, no dudes en preguntar.
 
 
 
