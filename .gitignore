@@ -12,10 +12,11 @@ __pycache__/
 *.log
 
 # Django database file
-db.sqlite3
+*.sqlite3
 
 # Django media folder
 media/
 
 # Others
-code-notes.txt
+*.note.txt
+.obsidian/
