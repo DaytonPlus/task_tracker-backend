@@ -27,8 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# REST_EXCEPTION_HANDLER = 'task_tracer.exception_handler'
 
 # Application definition
+
+AUTH_USER_MODEL = 'user.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -52,6 +55,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    'user',
     'crud',
 ]
 
@@ -140,7 +144,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080',

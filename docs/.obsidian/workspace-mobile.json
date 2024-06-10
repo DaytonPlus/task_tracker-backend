@@ -1,0 +1,149 @@
+{
+  "main": {
+    "id": "b9574053d2f71830",
+    "type": "split",
+    "children": [
+      {
+        "id": "3fa3c36c487c5c50",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fca19b70876b306b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ce5.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "09410267604b5e3d",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "235d631667e6f414",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {
+            "sortOrder": "alphabetical"
+          }
+        }
+      },
+      {
+        "id": "93568b7c178c70b6",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "",
+            "matchingCase": false,
+            "explainSearch": false,
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical"
+          }
+        }
+      },
+      {
+        "id": "db6216790c347c14",
+        "type": "leaf",
+        "state": {
+          "type": "tag",
+          "state": {
+            "sortOrder": "frequency",
+            "useHierarchy": true
+          }
+        }
+      },
+      {
+        "id": "113826c4c5f5cec4",
+        "type": "leaf",
+        "state": {
+          "type": "bookmarks",
+          "state": {}
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "126cfcf8259ce283",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "62a54e3f5c43848b",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "file": "ce5.md",
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          }
+        }
+      },
+      {
+        "id": "4e482a64e31c80f1",
+        "type": "leaf",
+        "state": {
+          "type": "outgoing-link",
+          "state": {
+            "file": "ce5.md",
+            "linksCollapsed": false,
+            "unlinkedCollapsed": true
+          }
+        }
+      },
+      {
+        "id": "a78a0fb0a6fdda1e",
+        "type": "leaf",
+        "state": {
+          "type": "outline",
+          "state": {
+            "file": "ce5.md"
+          }
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "fca19b70876b306b",
+  "lastOpenFiles": [
+    "apis.md",
+    "ce5.md",
+    "Caso-de-estudio-5.txt",
+    "ppt/3.jpg",
+    "ppt/REST.jpg",
+    "ppt/Extra-que-es-json.jpg",
+    "ppt/2.jpg",
+    "ppt/1.jpg",
+    "ppt/0.jpg",
+    "installation.md",
+    "index.md",
+    "detalles_v1.md"
+  ]
+}

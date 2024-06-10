@@ -1,11 +1,9 @@
-from rest_framework import routers
-from .views import ProjectView, TeamMemberView, TaskView
+from django.urls import path
+from.views import ProjectsView, ProjectView, TasksView, TaskView
 
-router = routers.DefaultRouter()
-
-router.register('proyect', ProjectView, 'proyect')
-router.register('team_member', TeamMemberView, 'teammember')
-router.register('task', TaskView, 'task')
-
-urlpatterns = router.urls
-
+urlpatterns = [
+    path('projects/', ProjectsView.as_view()),
+    path('projects/<int:project_id>/', ProjectView.as_view()),
+    path('projects/<int:project_id>/tasks/', TasksView.as_view()),
+    path('projects/<int:project_id>/tasks/<int:task_id>/', TaskView.as_view()),
+]

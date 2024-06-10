@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import auth
 
 
 # Disable Admin Authentication
@@ -28,14 +27,7 @@ admin.site.has_permission = lambda r: setattr(r, 'user', AccessUser()) or True
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include([
-        path('test/', auth.test),
         path('v1/', include('crud.urls')),
-        path('auth/', include([
-            path('check/', auth.checkToken),
-            path('login/', auth.login),
-            path('register/', auth.register),
-            path('profile/', auth.profile),
-            path('logout/', auth.logout),
-        ])),
+        path('auth/', include('user.urls')),
     ])),
 ]
