@@ -17,13 +17,12 @@ def CheckToken(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def Login(request):
-    #if not request.data.get('username'):
-    #    return Response({"detail": "Field Username or Email required!"}, status=status.HTTP_400_BAD_REQUEST)
-
+    if not request.data.get('username') or not request.data.get('password'):
+        return Response({"detail": "Field Username or Password required!"}, status=status.HTTP_400_BAD_REQUEST)
     user = get_object_or_404(User, username=request.data['username'])
     if not user.check_password(request.data['password']):
         return Response({"msg": "Invalid Password!"}, status=status.HTTP_400_BAD_REQUEST)
-    # serializer = UserSerializer(instance=user)
+    serializer = UserSerializer(instance=user)
     token, created = Token.objects.get_or_create(user=user)
     return Response({"token": token.key}, status=status.HTTP_200_OK)
 
@@ -51,17 +50,22 @@ def Logout(request):
         return Response({"msg": "You have been successfully logged out"}, status.HTTP_200_OK)
     return Response({"msg": "You not logged!"}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def ProfileMe(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
 class ProfileView(APIView):
     def get(self, request, id):
         if id != request.auth.token.user.id:
-            return Response({"detail": "Unauthorized, Insufficient permissions"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
         user = get_object_or_404(User, pk=id)
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
     def put(self, request, id):
         if id != request.auth.token.user.id:
-            return Response({"detail": "Unauthorized, Insufficient permissions"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
         user = get_object_or_404(User, pk=id)
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
@@ -71,7 +75,7 @@ class ProfileView(APIView):
 
     def delete(self, request, id):
         if id != request.auth.token.user.id:
-            return Response({"detail": "Unauthorized, Insufficient permissions"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
         user = get_object_or_404(User, pk=id)
         user.delete()
         return Response({"detail": "User deleted successfully"}, status=status.HTTP_200_OK)

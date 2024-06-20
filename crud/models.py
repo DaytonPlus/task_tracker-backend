@@ -15,15 +15,6 @@ class Project(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_by = models.ForeignKey('user.User', related_name='p_updated_by_user', on_delete=models.SET_NULL, null=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-    def save(self, *args, **kwargs):
-        if not self.created_by:
-            self.created_by = kwargs.get('request').user
-        if self.id:
-            self.updated_by = kwargs.get('request').user
-        else:
-            kwargs.get('request').user.project = self
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -41,15 +32,6 @@ class Task(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_by = models.ForeignKey('user.User', related_name='t_updated_by_user', on_delete=models.SET_NULL, null=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-    def save(self, *args, **kwargs):
-        if not self.created_by:
-            self.created_by = kwargs.get('request').user
-        if self.id:
-            self.updated_by = kwargs.get('request').user
-        else:
-            kwargs.get('request').user.project = self
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
