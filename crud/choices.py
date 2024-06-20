@@ -7,4 +7,3 @@ STATUS_CHOICES = [
     ('resolved', 'Resuelta'),
     ('closed', 'Cerrada')
 ]
-
