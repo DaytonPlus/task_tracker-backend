@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinLengthValidator
+from django.utils import timezone
 from.choices import STATUS_CHOICES
 
 
@@ -10,13 +11,17 @@ class Project(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     
-    created_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True)
-    updated_at = models.DateField(auto_now_add=True)
+    created_by = models.ForeignKey('user.User', related_name='p_created_by_user', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_by = models.ForeignKey('user.User', related_name='p_updated_by_user', on_delete=models.SET_NULL, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def save(self, *args, **kwargs):
-        if not self.id:
+        if not self.created_by:
+            self.created_by = kwargs.get('request').user
+        if self.id:
+            self.updated_by = kwargs.get('request').user
+        else:
             kwargs.get('request').user.project = self
         super().save(*args, **kwargs)
 
@@ -32,13 +37,17 @@ class Task(models.Model):
     end_date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_CHOICES[0][0])
  
-    created_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey('user.User', on_delete=models.SET_NULL, null=True)
-    updated_at = models.DateField(auto_now_add=True)
+    created_by = models.ForeignKey('user.User', related_name='t_created_by_user', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_by = models.ForeignKey('user.User', related_name='t_updated_by_user', on_delete=models.SET_NULL, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def save(self, *args, **kwargs):
-        if not self.id:
+        if not self.created_by:
+            self.created_by = kwargs.get('request').user
+        if self.id:
+            self.updated_by = kwargs.get('request').user
+        else:
             kwargs.get('request').user.project = self
         super().save(*args, **kwargs)
 

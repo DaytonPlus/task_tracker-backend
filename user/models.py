@@ -1,9 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser, Group, Permission, UserManager
 from rest_framework.authtoken.models import Token as RFToken
 from.choices import ROLE_CHOICES, GENDER_CHOICES
 from django.core.validators import MinLengthValidator
 
+class CustomUserManager(UserManager):
+    def create_superuser(self, **extra_fields):
+        return super().create_superuser(**extra_fields)
 
 class User(AbstractUser):
     username = models.CharField(max_length=50, validators=[MinLengthValidator(3)], unique=True)
@@ -17,6 +20,7 @@ class User(AbstractUser):
     
     groups = models.ManyToManyField(Group, related_name='user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='user_permissions_set')
+    objects = CustomUserManager()
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['full_name', 'identification_number', 'email', 'contact_number', 'gender', 'role']
