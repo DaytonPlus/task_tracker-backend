@@ -50,32 +50,18 @@ def Logout(request):
         return Response({"msg": "You have been successfully logged out"}, status.HTTP_200_OK)
     return Response({"msg": "You not logged!"}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
-def ProfileMe(request):
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)
-
 class ProfileView(APIView):
-    def get(self, request, id):
-        if id != request.auth.token.user.id:
-            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
-        user = get_object_or_404(User, pk=id)
-        serializer = UserSerializer(user)
+    def get(self, request):
+        serializer = UserSerializer(request.user)
         return Response(serializer.data)
 
-    def put(self, request, id):
-        if id != request.auth.token.user.id:
-            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
-        user = get_object_or_404(User, pk=id)
-        serializer = UserSerializer(user, data=request.data, partial=True)
+    def put(self, request):
+        serializer = UserSerializer(request.user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, id):
-        if id != request.auth.token.user.id:
-            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
-        user = get_object_or_404(User, pk=id)
-        user.delete()
+    def delete(self, request):
+        request.user.delete()
         return Response({"detail": "User deleted successfully"}, status=status.HTTP_200_OK)

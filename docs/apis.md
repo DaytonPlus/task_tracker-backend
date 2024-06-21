@@ -16,14 +16,13 @@ Las rutas de autenticación como su nombre lo dice son para que los usuarios ten
 - **`/api/auth/login/`**: Punto de acceso para que un usuario inicie sesión.
 - [más detalles](#ruta_login)
 
-
 - **`/api/auth/register/`**: Punto de acceso para que un usuario cree su cuenta.
 - [más detalles](#ruta_register)
 
 - **`/api/auth/check/`**: Punto de acceso para verificar si un usuario ha iniciado sesión. 
 - [más detalles](#ruta_check)
 
-- **`/api/auth/profile/`**: Punto de acceso para obtener información de un usuario especifico (`busqueda por nombre`).
+- **`/api/auth/profile/`**: Punto de acceso para obtener, actualizar o eliminar los datos del usuario actual 
 - [más detalles](#ruta_profile)
 
 #### Rutas Principales (Protegidas)
@@ -51,156 +50,189 @@ Las Rutas se restringen por varias condiciones:
 
 > Un tipo de contenido diferente de `application/json`, el servidor responde: `{"error": "Invalid Content-Type"}`
 
+
 #### Rutas
+
 
 ###### Ruta_login
 
 Permisos: [Abierto]
 
+Método [POST]
+
 ```json
 // Obtener token (Autenticación)
-{
- Url: "{HOST_API}/api/auth/login/",
- Method: "POST",
- Headers: {
-  "Content-Type": `application/json`
- },
- Body: {
-  "username": "{Usuario}", 
-  "password": "{Contraseña}"
- }
-}
+fetch(`${HOST_API}/api/auth/login/`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    username: usuario,
+    password: clave,
+  })
+})
 ```
 
-HTTP Responses
+Respuestas HTTP
 
-***
+```
+# 404 (NOT FOUND)
+No existe el [username]
 
-> Si el usuario no existe:
-> × HTTP_404_NOT_FOUND
-> `{"detail":"No User matches the given query."}`
+# 400 (BAD REQUEST)
+Campos requeridos faltantes: [username, password]
+Contraseña incorrecta
 
-***
-
-> Si la contraseña es incorrecta 
-> × HTTP_400_BAD_REQUEST
-> `{detail: "Invalid Password"}`
-
-***
-
-Si ambos son correctos:
-> ✓ HTTP_200_OK
-> `{token: "..."}`
-
-***
+# 200 (OK)
+Responde: {token: "..", data: {id: 1, username: .., ...}}
+```
 
 ###### Ruta_register
 
 Permisos: [Abierto]
 
-```json
+Método [POST]
+
+```javascript
 // Crear un nuevo usuario
-{
- Url: "{HOST_API}/api/auth/register/",
- Method: "POST",
- Headers: {
-  "Content-Type": "application/json"
- },
- Body: {
-  "username": "{Usuario}", 
-  "password": "{Contraseña}",
-  "full_name": "{FullName}",
-  "email": "{Email}",
-  "contact_number": "{ContactNumber}",
-  "identification_number": "{CI}",
-  "gender": "{Gender}",
-  "role": "{Role}"
- }
-}
+fetch(`${HOST_API}/api/auth/register/`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    username: usuario, 
+    password: clave,
+    full_name: nombre_y_apellidos,
+    email: correo,
+    contact_number: telefono,
+    identification_number: ci,
+    gender: genero,
+    role: rol,
+  })
+})
 ```
 
-HTTP Responses
+Respuestas HTTP
 
-***
+```
+# 400 (BAD REQUEST)
+Únicos o llaves primarias repetidos: [username, email, identification_number]
+Campos requeridos faltantes: [username, password, full_name, email, contact_number, identification_number, gender, role]
+Tipos de datos invalidos: [rol, gender]
+rol = backend | frontend | fullstack | DevOps Engineer | qa | uxui | project_manager
+gender = m | f
 
-> Si el `username` existe:
-> × HTTP_400_BAD_REQUEST
-> `{"detail":"El nombre de usuario ya existe o es invalido!"}`
-***
-> Si falta algun campo:
-> × HTTP_400_BAD_REQUEST
-> `[{ "field": "required"}, ...]`
-***
-El `username` no esta registrado:
-> ✓ HTTP_200_OK
-> `{token: "..."}
-***
+# 200 (OK)
+Responde: {token: "..", data: {id: 1, username: .., ...}}
+```
+
+
 ###### Ruta_check
+
 Permisos: [Protegido(Usuario)]
+
+Método [POST]
+
 ```json
-// Verificar el token
-{
- Url: "{HOST_API}/api/auth/check/",
- Method: "POST",
- Headers: {
-  "Content-Type": "application/json",
-  "Authorization": "Token {token..}"
- }
-}
+// Verificar la validez del token
+fetch(`${HOST_API}/api/auth/check/`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
 ```
 
-HTTP Responses
+Respuestas HTTP
 
-***
+```
+# 401 (UNAUTHORIZED)
+Token Invalido
 
-> El token invalido o sin token
-> HTTP_401_Unauthorized
-> `{"detail":"Invalid token."}`
+# 200 (OK)
+Responde: Tu token es válido
+```
 
-***
-
-> El token valido
-> ✓ HTTP_200_OK
-> `{"detail":"Your token is valid"}`
-
-***
 
 ###### Ruta_Profile
 
 Permisos: [Protegido(Usuario)]
 
-```json
-// Obtener un perfil de un usuario
-{
- Url: "{HOST_API}/api/auth/profile/{id}",
- Method: "POST",
- Headers: {
-  "Content-Type": "application/json",
-  "Authorization": "Token {token..}"
- },
- Body: {
-  "username": "{Usuario}"
- }
-}
+Método [GET]
+
+```javascript
+// Obtener datos del usuario actual
+fetch(`${HOST_API}/api/auth/profile/`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
 ```
 
-> #NOTA Si se usa (`me`) en vez de {id} se obtienen los datos del usuario actual *si el token es válido*
+Respuestas HTTP
 
-HTTP Responses
+```
+# 400 (BAD REQUEST)
+Únicos o llaves primarias repetidos: [username, email]
 
-***
+# 200 (OK)
+Responde con los datos {id: 1, username: .., ...}
+```
 
-> El `username` no existe:
-> × HTTP_404_NOT_FOUND
-> `{"detail":"No User matches the given query."}`
+Método [PUT]
 
-***
+```javascript
+// Actualizar datos de un usuario
+fetch(`${HOST_API}/api/auth/profile/`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  },
+  body: {
+    // optional user fields to update
+  }
+})
+```
 
-> El `username` existe:
-> ✓ HTTP_200_OK
-> `{"data":{"id":{..},"username":"{..}","email":"{..}}"}}`
+Respuestas HTTP
 
-***
+```
+# 400 (BAD REQUEST)
+Únicos o llaves primarias repetidos: [username, email, identification_number]
+Tipos de datos invalidos: [rol, gender]
+rol = backend | frontend | fullstack | DevOps Engineer | qa | uxui | project_manager
+gender = m | f
+
+# 200 (OK)
+Responde con los datos {id: 1, username: .., ...}
+```
+
+Método [DELETE]
+
+```javascript
+// Eliminar el usuario actual 
+fetch(`${HOST_API}/api/auth/profile/`, {
+  method: 'DELETE',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
+
+Respuestas HTTP
+
+```
+# 200 (OK)
+Responde: Usuario eliminado correctamente!
+```
+
 
 ##### Rutas del CRUD
 
@@ -208,309 +240,445 @@ HTTP Responses
 
 Permisos: [Protegido(Usuario)]
 
-```json
-// Obtener todos los proyectos
-{
- Url: "{HOST_API}/api/v1/projects/",
- Method: "GET",
- Headers: {
-  "Content-Type": "application/json",
-  "Authorization": "Token {token..}"
- }
-}
+Método [GET]
+
+```javascript
+// Obtener proyectos
+const params = {
+  // Parametros de búsqueda (multi) [id, name, description: descripcion, objective, start_date, end_date, created_at, updated_at]
+  name: "Task 1",
+  status: "new",
+  // Parametros de organización (multi) [orderby]
+  orderby: "name"
+};
+const querys = "?" + Object.keys(params).map((key) => `${key}=${encodeURIComponent(params[key])}`).join("&");
+
+fetch(`${HOST_API}/api/v1/projects${querys}/`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
 ```
 
-HTTP Responses:
+Respuestas HTTP
 
-***
+```
+# 200 (OK)
+Responde con los datos [{id: 1,name: .., ...}, ...]
+•  Si no hay datos responde []
+```
 
-> ✓ HTTP_200_OK
-> `[{id:0,name: "Proj1",...}, ...]`
-> *Si no hay elementos (proyectos)*
-> `[]`
+Método [POST]
 
-***
-
-```json
+```javascript
 // Crear un nuevo proyecto
-{
- Url: "{HOST_API}/api/v1/projects/",
- Method: "POST",
- Headers: {
-  "Content-Type": "application/json",
-  "Authorization": "Token {token..}"
- },
- Body: {
-  "name": "{Nombre}",
-  "description": "{Descripción}",
-  "objective": "{Objetivo}",
-  "start_date": "{FechaDeInicio}",
-  "end_date": "{FechaDeFin}"
- }
-}
+fetch(`${HOST_API}/api/v1/projects/`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  },
+  body: JSON.stringify({
+    name: nombre,
+    description: descripcion,
+    objective: objetivo,
+    start_date: fechaDeInicio,
+    end_date": fechaDeFin,
+  })
+})
 ```
 
-HTTP Responses:
+Respuestas HTTP
 
-***
+```
+# 400 (BAD REQUEST)
+Únicos o llaves primarias repetidos: [name]
+Campos requeridos faltantes: [name, description, objective, start_date, end_date]
+Tipos de datos invalidos: [start_date, end_date]
 
-> Si el `name` existe:
-> × HTTP_400_BAD_REQUEST
-> `{"name":["project with this name already exists."]}`
-
-***
-
-> Falta algún dato requerido:
-> × HTTP_400_BAD_REQUEST
-> `[{"NombreDelCampo": ["This field is required"]},{...}]
-
-***
-
-> Tipo de fecha incorrecto:
-> × HTTP_400_BAD_REQUEST
-> `{"NombreDelCampo":["Date has wrong format. Use one of these formats instead: YYYY-MM-DD."], ...}`
-
-***
-
-> ✓ HTTP_201_CREATED
-> `[{id:0,name:...},...]`
-
-***
+# 200 (OK)
+Responde con los datos {id: 1,name: .., ...}
+```
 
 ###### Ruta_Project
 
 Permisos: [Protegido(Usuario)]
 
-```json
+Método [GET]
+
+```javascript
 // Obtener datos de proyecto 
-{
- Url: "{HOST_API}/api/v1/projects/{id}",
- Method: "GET",
- Headers: {
-  "Content-Type": "application/json",
-  "Authorization": "Token {token..}"
- }
-}
+fetch(`${HOST_API}/api/v1/projects/${P_ID}`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
 ```
 
-HTTP Responses:
+Respuestas HTTP
 
-> Si no existe el proyecto con el `{id}`
-> × HTTP_404_NOT_FOUND
-> `{"detail":"No Project matches the given query."}`
+```
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
 
-***
-
-> ✓ HTTP_200_OK
-> `{id:0,name: "Proj1",...}`
-
-***
-
-```json
-// Actualizar un proyecto 
-{
- Url: "{HOST_API}/api/v1/projects/{id}",
- Method: "PUT",
- Headers: {
-  "Content-Type": "application/json",
-  "Authorization": "Token {token..}"
- }
-}
+# 200 (OK)
+Responde con los datos {id: 1,name: .., ...}
 ```
 
-#NOTA Si se utiliza `{id}/join/` puedes vincular el usuario actual con el proyecto de `{id}`
+Método [PUT]
 
-HTTP Responses:
+```javascript
+// Actualizar un proyecto
+fetch(`${HOST_API}/api/v1/projects/${P_ID}`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  },
+  body: JSON.stringify({
+    // optional fields to update
+  })
+})
+```
 
-> Si no existe el proyecto con el `{id}`
-> × HTTP_404_NOT_FOUND
-> `{"detail":"No Project matches the given query."}`
+Respuestas HTTP
 
-***
+```
+# 400 (BAD REQUEST)
+Únicos o llaves primarias: [name]
+Tipos de datos invalidos: [start_date, end_date]
 
-> Si algunos de los datos unicos `[name]` a actualizar existe:
-> × HTTP_400_BAD_REQUEST
-> `{"name":["project with this name already exists."]}`
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
 
-***
+# 200 (OK)
+Responde con los datos {id: 1,name: .., ...}
+```
 
-> Tipo de fecha incorrecto:
-> × HTTP_400_BAD_REQUEST
-> `{"NombreDelCampo":["Date has wrong format. Use one of these formats instead: YYYY-MM-DD."], ...}`
+Método [DELETE]
 
-***
+```javascript
+// Eliminar un proyecto
+fetch(`${HOST_API}/api/v1/projects/${P_ID}`, {
+  method: 'DELETE',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
 
-> ✓ HTTP_201_CREATED
-> `[{id:0,name:...},...]`
+Respuestas HTTP
 
-***
+```
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+
+# 200 (OK)
+Responde:  {"detail": "Deleted project success and (c) vinculed tasks"}
+```
+
+Método [POST]
+
+```javascript
+// Unirte a un proyecto
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/join`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
+
+Respuestas HTTP
+
+```
+# 400 (BAD REQUEST)
+Ya estas vinculado con el proyecto de `P_ID`
+Respuesta:  {"detail": "You already joined to this project"}
+
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+
+# 200 (OK)
+Responde: {"detail": "You joined now to the project"}
+```
+
+Método [POST]
+
+```javascript
+// Salir de un proyecto
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/leave`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
+
+Respuestas HTTP
+
+```
+# 400 (BAD REQUEST)
+No estas vinculado con el proyecto de `P_ID`
+Respuesta:  {"detail": "You already not joined to this project"}
+
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+
+# 200 (OK)
+Responde: {"detail": "You leaved now to the project"}
+```
+
 
 ###### Ruta_Tasks
 
 Permisos: [Protegido(Usuario)]
 
-```json
-// Obtener todos las tareas de un proyecto de id específico
-{
- Url: "{HOST_API}/api/v1/projects/{id}/tasks/",
- Method: "GET",
- Headers: {
-  "Content-Type": "application/json",
-  "Authorization": "Token {token..}"
- }
-}
+Método [GET]
+
+```javascript
+// Obtener tareas de un proyecto
+const params = {
+  // Parametros de búsqueda (multi) [id, name, description: descripcion, objective, start_date, end_date, created_at, updated_at]
+  name: "Task 1",
+  status: "new",
+  // Parametros de organización (multi) [orderby]
+  orderby: "name"
+};
+const querys = "?" + Object.keys(params).map((key) => `${key}=${encodeURIComponent(params[key])}`).join("&");
+
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks${querys}/`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
 ```
 
-HTTP Responses:
 
-> Si no existe el proyecto con el `{id}`
-> × HTTP_404_NOT_FOUND
-> `{"detail":"No Project matches the given query."}`
+Respuestas HTTP
 
-***
+```
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
 
-> ✓ HTTP_200_OK
-> `[{id:0,name: "Task1",...}, ...]`
-> *Si no hay elementos (proyectos)*
-> `[]`
-
-***
-
-```json
-// Crear una nueva tarea en un proyecto específico
-{
- Url: "{HOST_API}/api/v1/projects/{id}/tasks/",
- Method: "POST",
- Headers: {
-  "Content-Type": "application/json",
-  "Authorization": "Token {token..}"
- },
- Body: {
-  "name": "{Nombre}",
-  "description": "{Descripción}",
-  "assigned_to": "{TeamMembers || null}",
-  "start_date": "{FechaDeInicio}",
-  "end_date": "{FechaDeFin}",
-  "status": "{CHOICE_STATUS}"
- }
-}
+# 200 (OK)
+Responde con los datos [{id: 1,name: .., ...}, ...]
+•  Si no hay datos responde []
 ```
 
-Elementos con valores escogidos:
+Método [POST]
 
-**[CHOICE_STATUS](#Choice_Status)**
+```json
+// Crear una tarea
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  },
+  body: JSON.stringify({
+    name: nombre,
+    description: descripcion,
+    start_date: fechaDeInicio,
+    end_date: fechaDeFin
+  })
+})
+```
+
+Respuestas HTTP
+
+```
+# 400 (BAD REQUEST)
+Únicos o llaves primarias: [name]
+Campos requeridos faltantes: [name, description, start_date, end_date]
+Tipos de datos invalidos: [start_date, end_date]
+
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+
+# 201 (CREATED)
+Responde con los datos {id: 1,name: .., ...}
+```
 
 ###### Ruta_Task
 
 Permisos: [Protegido(Usuario)]
 
+Método [GET]
+
 ```json
-// Actualizar un proyecto 
-{
- Url: "{HOST_API}/api/v1/projects/{id}/tasks/{tid}/",
- Method: "PUT",
- Headers: {
-  "Content-Type": "application/json",
-  "Authorization": "Token {token..}"
- }
-}
+// Obtener información de una tarea
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
 ```
 
-#NOTA Si se utiliza `{tid}/assign/` puedes vincular el usuario actual con la tarea de `{tid}`
+Respuestas HTTP
 
-HTTP Responses:
+```
+# 400 (BAD REQUEST)
+Únicos o llaves primarias: [name]
+Tipos de datos invalidos: [start_date, end_date]
 
-> Si no existe el proyecto con el `{id}`
-> × HTTP_404_NOT_FOUND
-> `{"detail":"No Project matches the given query."}`
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+Tarea con `T_ID`
 
-***
-
-> Si algunos de los datos unicos `[name]` a actualizar existe:
-> × HTTP_400_BAD_REQUEST
-> `{"name":["project with this name already exists."]}`
-
-***
-
-> Tipo de fecha incorrecto:
-> × HTTP_400_BAD_REQUEST
-> `{"NombreDelCampo":["Date has wrong format. Use one of these formats instead: YYYY-MM-DD."], ...}`
-
-***
-
-> ✓ HTTP_201_CREATED
-> `[{id:0,name:...},...]`
-
-***
-
-
-
-
-
-
-***
-
-***
-
-The dev is working here!! 
-
-***
-
-***
-
-##### Choices Values
-
-Son un conjunto de (llave, valor) que permiten limitar la cantidad de opciones a la hora de completar un campo.
-Para completar un campo solo se utiliza la llave elegida del grupo de selección disponible.
-
-HTTP Responses:
-
-***
-
-> Si selecciona un valor fuera de la lista:
-> × HTTP_400_BAD_REQUEST
-> {"{NombreDelCampo}":["\"{TuValor}\" is not a valid choice."]}
-
-***
-
-###### Choice_Status
-
-> Son valores que establecen el estado de una tarea en el campo `[status]`
-
-```python
-STATUS_CHOICES = [
-    ('new', 'Nueva'),
-    ('assigned', 'Asignada'),
-    ('accepted', 'Aceptada'),
-    ('resolved', 'Resuelta'),
-    ('closed', 'Cerrada')
-]
-# DEFAULT=('new', 'Nueva')
+# 200 (OK)
+Responde con los datos {id: 1,name: .., ...}
 ```
 
-###### Choice_Role
+Método [PUT]
 
-> Son valores que establecen el rol de un miembro del equipo en el campo `[role]`
-
-```python
-ROLE_CHOICES = [
-    ('backend', 'Backend Developer'),
-    ('frontend', 'Frontend Developer'),
-    ('fullstack', 'Fullstack Developer'),
-    ('devops', 'DevOps Engineer'),
-    ('qa', 'QA Engineer'),
-    ('uxui', 'UX/UI Designer'),
-    ('project_manager', 'Project Manager')
-]
+```json
+// Actualizar información de una tarea
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  },
+  body: JSON.stringify({
+    // optional fields to update
+  })
+})
 ```
 
-###### Choice_Gender
+Respuestas HTTP
 
-> Son los valores que establecen el género de un miembro de equipo en el campo `[gender]`
-
-```python
-GENDER_CHOICES = [
-    ('m', 'Male'),
-    ('f', 'Female')
-]
 ```
+# 400 (BAD REQUEST)
+Únicos o llaves primarias: [name]
+Tipos de datos invalidos: [start_date, end_date]
+status = accepted | resolved | closed
+Otros [status] que son autoasignados [new, assigned]
+
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+Tarea con `T_ID`
+
+# 200 (OK)
+Responde con los datos actualizados {id: 1,name: .., ...}
+```
+
+Método [POST]
+
+```json
+// Asignarte una tarea
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/assign`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
+
+Respuestas HTTP
+
+```
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+Tarea con `T_ID`
+
+# 400 (BAD REQUEST)
+Ya has sido asignado 
+
+# 200 (OK)
+Has sido asignado a la tarea
+```
+
+Método [POST]
+
+```json
+// Desasignarte de una tarea
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/unassign`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
+
+Respuestas HTTP
+
+```
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+Tarea con `T_ID`
+
+# 400 (BAD REQUEST)
+No estas asignado a la tarea
+
+# 200 (OK)
+Has sido desasignado a la tarea
+```
+
+Método [POST]
+
+```json
+// Cerrar una tarea
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/close`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
+
+Respuestas HTTP
+
+```
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+Tarea con `T_ID`
+
+# 400 (BAD REQUEST)
+La tarea (x) ya ha sido terminada
+
+# 200 (OK)
+La tarea (x) ha sido cerrada
+```
+
+Método [POST]
+
+```json
+// Desasignarte de una tarea
+fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/resolve`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
+
+Respuestas HTTP
+
+```
+# 404 (NOT FOUND)
+Proyecto con `P_ID`
+Tarea con `T_ID`
+
+# 400 (BAD REQUEST)
+La tarea (x) ya ha sido cerrada
+
+# 200 (OK)
+La tarea (x) ha sido terminada
+```
+
