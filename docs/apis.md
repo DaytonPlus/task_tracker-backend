@@ -60,7 +60,7 @@ Permisos: [Abierto]
 
 Método [POST]
 
-```json
+```javascript
 // Obtener token (Autenticación)
 fetch(`${HOST_API}/api/auth/login/`, {
   method: 'POST',
@@ -135,7 +135,7 @@ Permisos: [Protegido(Usuario)]
 
 Método [POST]
 
-```json
+```javascript
 // Verificar la validez del token
 fetch(`${HOST_API}/api/auth/check/`, {
   method: 'POST',
@@ -477,7 +477,7 @@ Responde con los datos [{id: 1,name: .., ...}, ...]
 
 Método [POST]
 
-```json
+```javascript
 // Crear una tarea
 fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/`, {
   method: 'POST',
@@ -515,7 +515,7 @@ Permisos: [Protegido(Usuario)]
 
 Método [GET]
 
-```json
+```javascript
 // Obtener información de una tarea
 fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/`, {
   method: 'GET',
@@ -543,7 +543,7 @@ Responde con los datos {id: 1,name: .., ...}
 
 Método [PUT]
 
-```json
+```javascript
 // Actualizar información de una tarea
 fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/`, {
   method: 'PUT',
@@ -576,7 +576,7 @@ Responde con los datos actualizados {id: 1,name: .., ...}
 
 Método [POST]
 
-```json
+```javascript
 // Asignarte una tarea
 fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/assign`, {
   method: 'PUT',
@@ -603,7 +603,7 @@ Has sido asignado a la tarea
 
 Método [POST]
 
-```json
+```javascript
 // Desasignarte de una tarea
 fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/unassign`, {
   method: 'PUT',
@@ -630,7 +630,7 @@ Has sido desasignado a la tarea
 
 Método [POST]
 
-```json
+``javascript
 // Cerrar una tarea
 fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/close`, {
   method: 'POST',
@@ -657,7 +657,7 @@ La tarea (x) ha sido cerrada
 
 Método [POST]
 
-```json
+``javascript
 // Desasignarte de una tarea
 fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/resolve`, {
   method: 'POST',
