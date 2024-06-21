@@ -8,9 +8,8 @@ class Project(models.Model):
     name = models.CharField(max_length=255, validators=[MinLengthValidator(3)], unique=True)
     description = models.TextField(max_length=255)
     objectives = models.TextField(max_length=255)
-    start_date = models.DateField()
     end_date = models.DateField()
-    
+    start_date = models.DateField()
     created_by = models.ForeignKey('user.User', related_name='p_created_by_user', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_by = models.ForeignKey('user.User', related_name='p_updated_by_user', on_delete=models.SET_NULL, null=True)

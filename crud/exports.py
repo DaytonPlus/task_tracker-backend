@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*- 
+
+"""
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -142,3 +145,4 @@ class ExportPDFView(APIView):
         response = HttpResponse(file.getvalue(), content_type="application/pdf")
         response["Content-Disposition"] = "attachment; filename='projects_and_tasks.pdf'"
         return response
+"""

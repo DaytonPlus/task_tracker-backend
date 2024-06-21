@@ -109,7 +109,12 @@ Permisos: [Abierto]
  Body: {
   "username": "{Usuario}", 
   "password": "{Contraseña}",
-  "confirm": "{Contraseña}"
+  "full_name": "{FullName}",
+  "email": "{Email}",
+  "contact_number": "{ContactNumber}",
+  "identification_number": "{CI}",
+  "gender": "{Gender}",
+  "role": "{Role}"
  }
 }
 ```
@@ -121,6 +126,10 @@ HTTP Responses
 > Si el `username` existe:
 > × HTTP_400_BAD_REQUEST
 > `{"detail":"El nombre de usuario ya existe o es invalido!"}`
+***
+> Si falta algun campo:
+> × HTTP_400_BAD_REQUEST
+> `[{ "field": "required"}, ...]`
 ***
 El `username` no esta registrado:
 > ✓ HTTP_200_OK
@@ -136,10 +145,6 @@ Permisos: [Protegido(Usuario)]
  Headers: {
   "Content-Type": "application/json",
   "Authorization": "Token {token..}"
- },
- Body: {
-  "username": "{Usuario}", 
-  "password": "{Contraseña}"
  }
 }
 ```
@@ -167,7 +172,7 @@ Permisos: [Protegido(Usuario)]
 ```json
 // Obtener un perfil de un usuario
 {
- Url: "{HOST_API}/api/auth/profile/",
+ Url: "{HOST_API}/api/auth/profile/{id}",
  Method: "POST",
  Headers: {
   "Content-Type": "application/json",
@@ -178,6 +183,8 @@ Permisos: [Protegido(Usuario)]
  }
 }
 ```
+
+> #NOTA Si se usa (`me`) en vez de {id} se obtienen los datos del usuario actual *si el token es válido*
 
 HTTP Responses
 
@@ -311,6 +318,8 @@ HTTP Responses:
 }
 ```
 
+#NOTA Si se utiliza `{id}/join/` puedes vincular el usuario actual con el proyecto de `{id}`
+
 HTTP Responses:
 
 > Si no existe el proyecto con el `{id}`
@@ -393,26 +402,53 @@ Elementos con valores escogidos:
 
 ###### Ruta_Task
 
+Permisos: [Protegido(Usuario)]
+
+```json
+// Actualizar un proyecto 
+{
+ Url: "{HOST_API}/api/v1/projects/{id}/tasks/{tid}/",
+ Method: "PUT",
+ Headers: {
+  "Content-Type": "application/json",
+  "Authorization": "Token {token..}"
+ }
+}
+```
+
+#NOTA Si se utiliza `{tid}/assign/` puedes vincular el usuario actual con la tarea de `{tid}`
+
+HTTP Responses:
+
+> Si no existe el proyecto con el `{id}`
+> × HTTP_404_NOT_FOUND
+> `{"detail":"No Project matches the given query."}`
+
 ***
 
-The dev is working here!! 
+> Si algunos de los datos unicos `[name]` a actualizar existe:
+> × HTTP_400_BAD_REQUEST
+> `{"name":["project with this name already exists."]}`
 
 ***
 
-***
-
-
-###### Ruta_TeamMembers
-
-***
-
-The dev is working here!! 
+> Tipo de fecha incorrecto:
+> × HTTP_400_BAD_REQUEST
+> `{"NombreDelCampo":["Date has wrong format. Use one of these formats instead: YYYY-MM-DD."], ...}`
 
 ***
 
+> ✓ HTTP_201_CREATED
+> `[{id:0,name:...},...]`
+
 ***
 
-###### Ruta_TeamMember
+
+
+
+
+
+***
 
 ***
 
