@@ -234,6 +234,56 @@ Responde: Usuario eliminado correctamente!
 ```
 
 
+##### Rutas de exportación
+
+###### Ruta_ExportXLS
+
+Permisos: [Protegido(Usuario)]
+
+Método [GET]
+
+```javascript
+// Obtener XLS
+fetch(`${HOST_API}/api/v1/exports/xls/`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
+
+Respuestas HTTP
+
+```
+File: projects_and_tasks.xls
+```
+
+
+###### Ruta_ExportPDF
+
+Permisos: [Protegido(Usuario)]
+
+Método [GET]
+
+```javascript
+// Obtener PDF
+fetch(`${HOST_API}/api/v1/exports/pdf/`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Token ${TOKEN}`
+  }
+})
+```
+
+Respuestas HTTP
+
+```
+File: projects_and_tasks.pdf
+```
+
+
 ##### Rutas del CRUD
 
 ###### Ruta_Projects
@@ -681,4 +731,6 @@ La tarea (x) ya ha sido cerrada
 # 200 (OK)
 La tarea (x) ha sido terminada
 ```
+
+
 
