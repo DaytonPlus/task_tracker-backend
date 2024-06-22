@@ -630,7 +630,7 @@ Has sido desasignado a la tarea
 
 Método [POST]
 
-``javascript
+```javascript
 // Cerrar una tarea
 fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/close`, {
   method: 'POST',
@@ -657,7 +657,7 @@ La tarea (x) ha sido cerrada
 
 Método [POST]
 
-``javascript
+```javascript
 // Desasignarte de una tarea
 fetch(`${HOST_API}/api/v1/projects/${P_ID}/tasks/${T_ID}/resolve`, {
   method: 'POST',
